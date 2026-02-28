@@ -1,0 +1,40 @@
+.customers-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.customers-header h1 {
+  margin: 0;
+}
+
+.customer-row {
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.customer-row:hover {
+  background-color: rgba(255, 255, 255, 0.03) !important;
+}
+
+.customer-row.is-overdue {
+  background-color: rgba(239, 68, 68, 0.08);
+}
+
+.customer-row.is-overdue:hover {
+  background-color: rgba(239, 68, 68, 0.12) !important;
+}
+
+.pending-count {
+  font-weight: 600;
+}
+
+.pending-count.active { color: var(--text-main); }
+.pending-count.inactive { color: var(--text-dim); }
+
+.empty-state {
+  text-align: center;
+  padding: 2rem;
+  color: var(--text-dim);
+}

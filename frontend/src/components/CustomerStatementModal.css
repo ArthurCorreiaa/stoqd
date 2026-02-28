@@ -1,0 +1,152 @@
+/* --- Estrutura do Modal --- */
+.statement-modal {
+  max-width: 650px;
+  width: 100%;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+}
+.statement-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+.statement-header h2 {
+  margin: 0;
+  font-size: 1.4rem;
+}
+
+/* --- Legendas de Status --- */
+.statement-legend {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+  flex-wrap: wrap;
+}
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  color: var(--text-dim);
+}
+.box { width: 14px; height: 14px; border-radius: 4px; }
+.box.paid { background-color: var(--success-color); }
+.box.paid-late { background-color: #f59e0b; }
+.box.pending { background-color: var(--border-color); }
+.box.overdue { background-color: var(--danger-color); }
+
+/* --- Lista e Acordeão de Vendas --- */
+.statement-sales-list {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding-right: 8px;
+}
+.sale-accordion-card {
+  background: var(--input-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+.sale-accordion-card:hover { border-color: rgba(139, 92, 246, 0.4); }
+
+.sale-accordion-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.2rem;
+  cursor: pointer;
+  background: transparent;
+  transition: background 0.2s;
+}
+.sale-accordion-header:hover { background: rgba(255, 255, 255, 0.02); }
+
+/* --- Informações da Venda --- */
+.sale-info-left h4 {
+  margin: 0 0 4px 0;
+  font-size: 1.05rem;
+  color: var(--text-main);
+}
+.sale-products-label {
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  display: block;
+  max-width: 350px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.sale-info-right { display: flex; align-items: center; gap: 16px; }
+.sale-total { font-weight: 700; color: var(--text-main); font-size: 1.1rem; }
+
+.chevron-icon { color: var(--text-dim); transition: transform 0.3s ease; }
+.chevron-icon.expanded { transform: rotate(180deg); color: var(--accent-color); }
+
+/* --- Corpo do Acordeão (Parcelas) --- */
+.sale-accordion-body {
+  padding: 1.2rem;
+  border-top: 1px solid var(--border-color);
+  background: var(--bg-color);
+}
+.installments-squares {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+.inst-square {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: white;
+}
+.inst-square.paid { background-color: var(--success-color); }
+.inst-square.pending { background-color: var(--border-color); color: var(--text-dim); }
+.inst-square.overdue { background-color: var(--danger-color); }
+
+/* --- Lista Detalhada de Pagamentos --- */
+.installments-title {
+  margin: 0 0 12px 0;
+  font-size: 0.9rem;
+  color: var(--text-dim);
+  font-weight: 600;
+}
+.installments-list { display: flex; flex-direction: column; gap: 8px; }
+.installment-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 14px;
+  background: var(--input-bg);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+.inst-name { font-weight: 600; font-size: 0.95rem; color: var(--text-main); }
+.inst-actions { display: flex; align-items: center; gap: 16px; }
+.inst-date { font-size: 0.85rem; color: var(--text-dim); }
+
+/* --- Botão de Baixa --- */
+.btn-pay {
+  background: rgba(16, 185, 129, 0.15);
+  color: var(--success-color);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  padding: 6px 16px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-pay:hover { background: var(--success-color); color: white; }

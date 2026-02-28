@@ -1,0 +1,8 @@
+/* --- Componentes Específicos do Estoque --- */
+.input-date-styled { color-scheme: dark; }
+.input-date-styled::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+}
+.input-date-styled::-webkit-calendar-picker-indicator:hover { opacity: 1; }

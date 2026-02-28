@@ -1,0 +1,90 @@
+/* --- Estrutura Principal --- */
+.home-container {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem;
+  box-sizing: border-box;
+}
+.loading-state {
+  text-align: center;
+  padding: 4rem;
+  color: var(--text-dim);
+}
+
+/* --- Filtros (Vitrine) --- */
+.brands-filter { margin-bottom: 2rem; }
+.filter-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  font-weight: 700;
+  display: block;
+  margin-bottom: 1rem;
+}
+.filter-buttons { display: flex; gap: 0.8rem; flex-wrap: wrap; }
+.btn-filter {
+  background: var(--card-color);
+  border: 1px solid var(--border-color);
+  color: var(--text-dim);
+  padding: 8px 20px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+.btn-filter:hover { border-color: var(--text-dim); color: var(--text-main); }
+.btn-filter.active {
+  background: var(--accent-color);
+  border-color: var(--accent-color);
+  color: white;
+}
+
+/* --- Grid de Produtos --- */
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 2rem;
+  padding-top: 10px;
+}
+.product-card {
+  overflow: hidden;
+  transition: transform 0.2s, border-color 0.2s;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+}
+.product-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--accent-color);
+}
+.product-image-placeholder {
+  height: 220px;
+  background: var(--input-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  opacity: 0.2;
+  border-bottom: 1px solid var(--border-color);
+}
+.product-info {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  flex: 1;
+}
+.product-info h3 {
+  margin: 0;
+  font-size: 1.15rem;
+  color: var(--text-main);
+  font-weight: 600;
+}
+.product-price {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--accent-color);
+  margin-top: auto;
+}

@@ -1,0 +1,110 @@
+/* --- Container e Gatilho --- */
+.dropdown-container { position: relative; width: 100%; }
+.dropdown-trigger {
+  background: var(--input-bg);
+  border: 1px solid var(--border-color);
+  padding: 14px;
+  border-radius: 10px;
+  color: var(--text-main);
+  font-size: 14px; 
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.2s;
+}
+.dropdown-trigger:hover, .dropdown-trigger.active { border-color: var(--accent-color); }
+.placeholder-text { color: var(--text-dim); }
+.selected-text { color: var(--text-main); font-weight: 600; }
+.dropdown-arrow { font-size: 0.8rem; color: var(--text-dim); }
+
+/* --- Menu Aberto --- */
+.dropdown-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  width: 100%;
+  background: var(--card-color);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  z-index: 100;
+  overflow: hidden;
+  animation: fadeIn 0.2s ease;
+}
+
+/* --- Campo de Busca Interno --- */
+.dropdown-search-container { 
+  padding: 12px; 
+  border-bottom: 1px solid var(--border-color); 
+}
+.dropdown-search {
+  width: 100%;
+  padding: 10px;
+  background: var(--bg-color); 
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  color: var(--text-main);
+  outline: none;
+  font-size: 14px; 
+  box-sizing: border-box; /* Adicionado para evitar quebra de layout */
+}
+.dropdown-search:focus { border-color: var(--accent-color); }
+
+/* --- Lista de Itens --- */
+.dropdown-list { max-height: 250px; overflow-y: auto; }
+.dropdown-item {
+  padding: 10px 22px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background 0.2s;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+  color: var(--text-main);
+  font-size: 14px; 
+}
+.dropdown-item:hover { background: var(--bg-color); }
+.item-name { flex: 1; }
+.create-item { color: var(--accent-color); font-weight: 600; }
+
+/* --- Ações Flutuantes (Hover) --- */
+.item-actions {
+  display: flex;
+  gap: 4px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+}
+.dropdown-item:hover .item-actions { opacity: 1; pointer-events: auto; }
+
+.action-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 6px;
+  color: var(--text-dim); 
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.action-btn svg { transition: stroke 0.2s ease; }
+.action-btn.edit:hover { color: var(--accent-color); background-color: rgba(139, 92, 246, 0.1); }
+.action-btn.delete:hover { color: var(--danger-color); background-color: var(--danger-bg); }
+
+/* --- Modo de Edição Inline --- */
+.edit-mode-container { display: flex; width: 100%; gap: 8px; }
+.edit-item-input { 
+  flex: 1; 
+  padding: 8px; 
+  font-size: 14px; 
+  background: var(--input-bg);
+  border: 1px solid var(--accent-color);
+  color: var(--text-main);
+  border-radius: 6px;
+  outline: none;
+}
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }

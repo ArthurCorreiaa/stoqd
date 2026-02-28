@@ -1,0 +1,78 @@
+/* --- Container Principal --- */
+.login-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 200px); 
+  padding: 2rem;
+}
+.login-card {
+  width: 100%;
+  max-width: 420px;
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* --- Cabeçalho do Login --- */
+.login-header {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.login-header .brand-symbol {
+  font-size: 2.5rem;
+  color: var(--brand-symbol);
+  line-height: 1;
+}
+.login-header .brand-name {
+  font-size: 2.5rem;
+  margin: 0;
+}
+.login-header p {
+  color: var(--text-dim);
+  font-size: 0.95rem;
+  margin: 8px 0 0 0; /* Otimizado! */
+}
+
+/* --- Formulário --- */
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+.login-error {
+  background: var(--danger-bg);
+  color: var(--danger-color);
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  font-size: 0.85rem;
+  text-align: center;
+  font-weight: 600;
+}
+.login-btn {
+  width: 100%;
+  margin-top: 1rem;
+  padding: 1.25rem; 
+}
+
+/* --- Rodapé do Login --- */
+.login-footer {
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--text-dim);
+  margin-top: 1rem;
+}
+.login-footer a {
+  color: var(--accent-color);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s;
+}
+.login-footer a:hover {
+  color: var(--accent-hover);
+}

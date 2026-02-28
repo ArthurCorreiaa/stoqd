@@ -1,0 +1,95 @@
+/* --- Container Principal --- */
+.modern-footer {
+  width: 100%;
+  background-color: var(--bg-color);
+  border-top: 1px solid var(--border-color);
+  padding: 3rem 0 1.5rem;
+  margin-top: auto;
+}
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+/* --- Topo (Logo e Navegação) --- */
+.footer-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+.brand-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.footer-logo { display: flex; align-items: center; gap: 8px; }
+.footer-logo .brand-symbol { font-size: 1.2rem; }
+.footer-logo .brand-name {
+  font-size: 1.2rem; 
+  font-weight: 800;  
+  letter-spacing: -1px;
+  opacity: 0.8; 
+}
+.footer-mission { color: var(--text-dim); font-size: 0.95rem; margin: 0; }
+
+.footer-nav { display: flex; gap: 2rem; align-items: center; }
+.footer-nav a {
+  color: var(--text-dim);
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.footer-nav a:hover { color: var(--accent-color); }
+
+/* --- Rodapé Inferior (Direitos e Contato) --- */
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  border-top: 1px solid var(--border-color);
+  padding-top: 1.5rem;
+}
+.footer-bottom-left p { color: var(--text-dim); font-size: 0.85rem; margin: 0 0 4px 0; }
+.footer-bottom-left .made-by { font-weight: 500; margin: 0; }
+.footer-bottom-right { display: flex; justify-content: flex-end; }
+
+/* --- Ícones Sociais --- */
+.contact-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
+}
+.dev-contact-label {
+  color: var(--text-dim);
+  font-size: 0.75rem;
+  letter-spacing: 0.5px;
+  margin: 0;
+  font-weight: 700;
+}
+.social-links { display: flex; gap: 16px; justify-content: flex-end; }
+.dev-link.icon-link {
+  color: var(--text-dim);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+.dev-link.icon-link:hover { color: var(--accent-color); transform: translateY(-3px); }
+
+/* --- Responsividade --- */
+@media (max-width: 768px) {
+  .footer-top { flex-direction: column; align-items: flex-start; }
+  .footer-nav { flex-wrap: wrap; gap: 1rem 1.5rem; }
+  .footer-bottom { flex-direction: column; align-items: flex-start; gap: 1.5rem; }
+  .footer-bottom-right { justify-content: flex-start; }
+  .contact-wrapper { align-items: flex-start; }
+  .social-links { justify-content: flex-start; }
+}

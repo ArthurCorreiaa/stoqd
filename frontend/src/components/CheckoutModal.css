@@ -1,0 +1,36 @@
+/* --- Layout Principal --- */
+.checkout-total-box {
+  background: var(--bg-color);
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* --- Tipografia do Total --- */
+.checkout-total-box span {
+  color: var(--text-dim);
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.checkout-total-box h3 {
+  margin: 0;
+  color: var(--success-color);
+  font-size: 1.8rem;
+}
+
+/* --- Elementos de Formulário --- */
+.checkout-select {
+  height: 50px;
+  font-size: 1rem;
+}
+.checkout-warning {
+  display: block;
+  margin-top: 8px;
+  color: var(--text-dim);
+}
