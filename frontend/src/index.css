@@ -1,0 +1,316 @@
+@import url("https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@600;700;800&family=Inter:wght@400;500;600;700&family=Syne:wght@700;800&display=swap");
+
+/* --- Variáveis Globais --- */
+:root {
+  --brand-color: #ffffff;
+  --brand-symbol: #00f2ff;
+  --bg-color: #0e0e11;
+  --card-color: #18181c;
+  --input-bg: #060608;
+  --border-color: #27272f;
+  --accent-color: #8b5cf6;
+  --accent-hover: #a78bfa;
+  --text-main: #f4f4f5;
+  --text-dim: #9393a5;
+  --success-color: #10b981;
+  --success-bg: rgba(16, 185, 129, 0.08);
+  --danger-color: #ef4444;
+  --danger-bg: rgba(239, 68, 68, 0.15);
+  --font-logo: "Syne", sans-serif;
+  --font-heading: "Be Vietnam Pro", sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
+}
+
+/* --- Reset e Estrutura Base --- */
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+#root {
+  width: 100%;
+  min-height: 100vh;
+}
+
+/* --- Tipografia --- */
+.brand-name {
+  font-family: var(--font-logo);
+  font-weight: 800;
+  font-size: 1.8rem;
+  color: var(--brand-color);
+  letter-spacing: -1.5px;
+  margin: 0;
+  text-transform: lowercase;
+}
+.brand-symbol {
+  font-size: 1.8rem;
+  color: var(--brand-symbol);
+  line-height: 1;
+}
+h1, h2, h3, h4, .page-title, .section-subtitle {
+  font-family: var(--font-heading);
+  letter-spacing: -0.02em;
+}
+button, input, select, textarea, .value {
+  font-family: var(--font-body);
+}
+
+/* --- Layout e Cards --- */
+.page-title {
+  font-size: 2rem;
+  font-weight: 800;
+  color: white; 
+  margin: 0 0 1.5rem 0;
+}
+.base-card {
+  background: var(--card-color);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+.page-container {
+  padding: 3rem 4rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  min-height: 100vh;
+}
+.page-card {
+  padding: 2.5rem;
+  margin-bottom: 2rem;
+}
+.section-subtitle {
+  font-size: 1.25rem;
+  margin: 0 0 2rem 0; /* Otimizado de margin-top/bottom separados */
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+/* --- Formulários --- */
+.standard-form { display: flex; flex-direction: column; gap: 1.5rem; }
+.form-row { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+.form-group { display: flex; flex-direction: column; gap: 0.5rem; }
+.form-group label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-dim);
+  font-weight: 700;
+}
+.input-standard {
+  background: var(--input-bg);
+  border: 1px solid var(--border-color);
+  padding: 12px 16px;
+  border-radius: 10px;
+  color: var(--text-main);
+  font-size: 15px;
+  outline: none;
+  transition: all 0.2s;
+  width: 100%;
+  box-sizing: border-box;
+}
+.input-standard:focus {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.2);
+}
+
+/* --- Botões --- */
+.form-actions { display: flex; gap: 1rem; margin-top: 1.5rem; }
+.form-actions button { flex: 1; padding: 1.25rem; }
+.btn-primary {
+  background: var(--accent-color);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-primary:hover:not(:disabled) {
+  background: var(--accent-hover);
+  transform: translateY(-2px);
+}
+.btn-primary:disabled {
+  background: var(--border-color);
+  color: var(--text-dim);
+  cursor: not-allowed;
+}
+.btn-secondary {
+  background: transparent;
+  color: var(--text-main);
+  border: 1px solid var(--border-color);
+  padding: 12px 24px;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-secondary:hover:not(:disabled) {
+  background: var(--input-bg);
+  border-color: var(--text-dim);
+}
+
+/* --- Tabelas Globais --- */
+.data-table { width: 100%; border-collapse: collapse; }
+.data-table th {
+  text-align: left;
+  padding: 12px;
+  color: var(--text-dim);
+  border-bottom: 1px solid var(--border-color);
+  text-transform: uppercase;
+  font-size: 11px;
+  font-weight: 700;
+}
+.data-table td {
+  padding: 16px 12px;
+  border-bottom: 1px solid var(--border-color);
+  font-size: 14px;
+}
+.table-container { overflow-x: auto; }
+
+/* --- Badges --- */
+.badge {
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+}
+.badge-success { background: var(--success-bg); color: var(--success-color); }
+.badge-danger { background: var(--danger-bg); color: var(--danger-color); }
+
+/* --- Modais --- */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  backdrop-filter: blur(5px);
+}
+.modal-content {
+  width: 90%;
+  max-width: 480px;
+  padding: 2.5rem;
+  border-radius: 12px;
+  background: var(--card-color);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+  box-sizing: border-box;
+  animation: modalFadeIn 0.2s ease-out;
+  max-height: 90vh; 
+  overflow-y: auto;
+}
+@keyframes modalFadeIn {
+  from { opacity: 0; transform: translateY(-15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- Botões de Ação (Tabelas) --- */
+.action-buttons { display: flex; gap: 12px; align-items: center; }
+.btn-edit-text {
+  background: rgba(139, 92, 246, 0.1);
+  color: var(--accent-color);
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-edit-text:hover { background: var(--accent-color); color: white; }
+.btn-delete-text {
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--danger-color);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-delete-text:hover { background: var(--danger-color); color: white; }
+
+/* --- Utilitários --- */
+.flex-1 { flex: 1; min-width: 150px; }
+.flex-2 { flex: 2; min-width: 300px; }
+.text-dim { color: var(--text-dim); }
+.text-success { color: var(--success-color) !important; font-weight: 600; }
+.text-danger { color: var(--danger-color) !important; font-weight: 600; }
+.highlight-cell {
+  background-color: var(--success-bg) !important;
+  border-left: 1px solid rgba(16, 185, 129, 0.1);
+}
+
+/* --- Inputs com Ícone --- */
+.input-with-icon {
+  display: flex;
+  align-items: center;
+  background: var(--input-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 0 16px;
+  transition: all 0.2s;
+  width: 100%;
+  box-sizing: border-box;
+}
+.input-with-icon:focus-within {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.2);
+}
+.input-with-icon svg { color: var(--text-dim); flex-shrink: 0; }
+.input-with-icon input {
+  border: none;
+  background: transparent;
+  color: var(--text-main);
+  padding: 12px 12px;
+  width: 100%;
+  font-family: inherit;
+  font-size: 15px;
+  outline: none;
+}
+.input-with-icon input::placeholder { color: var(--text-dim); opacity: 0.5; }
+
+/* --- Utilitários de Layout (Substitutos de Inline CSS) --- */
+.app-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: var(--bg-color);
+}
+.app-main {
+  flex: 1;
+}
+.search-bar-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.modal-title-with-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 0 0 1.5rem 0;
+}
+
+/* --- Responsividade --- */
+@media (max-width: 768px) {
+  .page-container { padding: 1.5rem; }
+  .form-row { flex-direction: column; gap: 1rem; }
+  .flex-1, .flex-2 { width: 100%; }
+}
