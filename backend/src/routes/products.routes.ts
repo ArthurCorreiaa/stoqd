@@ -5,7 +5,7 @@ import { authMiddleware } from '../middlewares/auth.js';
 const router = Router();
 
 router.get('/', ProductController.getAll);
-router.post('/', authMiddleware, ProductController.create);
+router.post('/', authMiddleware, ProductController.upsert);
 router.delete('/:id', authMiddleware, ProductController.remove);
 
 export default router;

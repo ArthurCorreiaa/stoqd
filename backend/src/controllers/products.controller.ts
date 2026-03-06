@@ -1,24 +1,26 @@
-import { type Request, type Response } from 'express';
-import { prisma } from '../lib/prisma.js';
+import { type Request, type Response } from "express";
+import { prisma } from "../lib/prisma.js";
 
 export async function getAll(_req: Request, res: Response) {
   try {
     const products = await prisma.product.findMany({
-      include: { brand: true, category: true } 
+      include: { brand: true, category: true },
     });
 
-    const productsWithAnalytics = products.map(product => {
-      const activePrice = product.promotionalPrice ? product.promotionalPrice : product.sellingPrice;
-      
+    const productsWithAnalytics = products.map((product) => {
+      const activePrice = product.promotionalPrice
+        ? product.promotionalPrice
+        : product.sellingPrice;
+
       const unitProfit = activePrice - product.averageCost;
-      
+
       const totalExpectedProfit = unitProfit * product.quantity;
 
       return {
         ...product,
         activePrice,
         unitProfit,
-        totalExpectedProfit
+        totalExpectedProfit,
       };
     });
 
@@ -29,14 +31,51 @@ export async function getAll(_req: Request, res: Response) {
   }
 }
 
-export async function create(req: Request, res: Response) {
-  const { 
-    name, brandId, categoryId, quantity, averageCost, 
-    sellingPrice, promotionalPrice, expiryDate, imageUrl 
+export async function upsert(req: Request, res: Response) {
+  const {
+    name,
+    brandId,
+    categoryId,
+    quantity,
+    averageCost,
+    sellingPrice,
+    promotionalPrice,
+    expiryDate,
+    imageUrl,
   } = req.body;
 
   try {
-    const product = await prisma.product.create({
+    const existingProduct = await prisma.product.findUnique({
+      where: { name: name },
+    });
+
+    if (existingProduct) {
+      const currentQty = Number(existingProduct.quantity) || 0;
+      const currentCost = Number(existingProduct.averageCost) || 0;
+      const incomingQty = Number(quantity) || 0;
+      const incomingCost = Number(averageCost) || 0;
+
+      const totalQuantity = currentQty + incomingQty;
+
+      const newAverageCost =
+        totalQuantity > 0
+          ? (currentQty * currentCost + incomingQty * incomingCost) /
+            totalQuantity
+          : incomingCost;
+
+      const updatedProduct = await prisma.product.update({
+        where: { id: existingProduct.id },
+        data: {
+          quantity: totalQuantity,
+          averageCost: newAverageCost,
+          sellingPrice: Number(sellingPrice) || existingProduct.sellingPrice,
+        },
+      });
+
+      return res.json(updatedProduct);
+    }
+
+    const newProduct = await prisma.product.create({
       data: {
         name,
         brandId: Number(brandId),
@@ -46,45 +85,14 @@ export async function create(req: Request, res: Response) {
         sellingPrice: Number(sellingPrice || 0),
         promotionalPrice: promotionalPrice ? Number(promotionalPrice) : null,
         expiryDate: expiryDate ? new Date(expiryDate) : null,
-        imageUrl
+        imageUrl,
       },
     });
-    return res.status(201).json(product);
+
+    return res.status(201).json(newProduct);
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ error: "Erro ao criar produto" });
-  }
-}
-
-export async function update(req: Request, res: Response) {
-  const { id } = req.params;
-  const { 
-    name, brandId, categoryId, quantity, averageCost, 
-    sellingPrice, promotionalPrice, expiryDate, imageUrl 
-  } = req.body;
-
-  try {
-    const updateData: any = {};
-
-    if (name !== undefined) updateData.name = name;
-    if (brandId !== undefined) updateData.brandId = Number(brandId);
-    if (categoryId !== undefined) updateData.categoryId = categoryId ? Number(categoryId) : null;
-    if (quantity !== undefined) updateData.quantity = Number(quantity);
-    if (averageCost !== undefined) updateData.averageCost = Number(averageCost);
-    if (sellingPrice !== undefined) updateData.sellingPrice = Number(sellingPrice);
-    if (promotionalPrice !== undefined) updateData.promotionalPrice = promotionalPrice ? Number(promotionalPrice) : null;
-    if (expiryDate !== undefined) updateData.expiryDate = expiryDate ? new Date(expiryDate) : null;
-    if (imageUrl !== undefined) updateData.imageUrl = imageUrl;
-
-    const product = await prisma.product.update({
-      where: { id: Number(id) },
-      data: updateData,
-    });
-    
-    return res.json(product);
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ error: "Erro ao atualizar produto" });
+    return res.status(500).json({ error: "Erro ao processar produto" });
   }
 }
 
