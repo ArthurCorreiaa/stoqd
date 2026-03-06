@@ -79,7 +79,7 @@ export async function upsert(req: Request, res: Response) {
 
     const newProduct = await prisma.product.create({
       data: {
-        name,
+        name: trimmedName,
         brandId: Number(brandId),
         categoryId: categoryId ? Number(categoryId) : null,
         quantity: Number(quantity),
