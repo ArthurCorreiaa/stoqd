@@ -2,15 +2,15 @@ import express, { type Request, type Response } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 
-import { limiter } from './middlewares/rateLimiter';
+import { limiter } from './middlewares/rateLimiter.js';
 
-import authRouter from './routes/auth.routes';
-import brandsRouter from './routes/brands.routes'; 
-import categoriesRoutes from './routes/categories.routes';
-import customersRoutes from './routes/customers.routes';
-import installmentsRoutes from './routes/installments.routes';
-import productsRouter from './routes/products.routes';
-import salesRoutes from './routes/sales.routes';
+import authRouter from './routes/auth.routes.js';
+import brandsRouter from './routes/brands.routes.js'; 
+import categoriesRoutes from './routes/categories.routes.js';
+import customersRoutes from './routes/customers.routes.js';
+import installmentsRoutes from './routes/installments.routes.js';
+import productsRouter from './routes/products.routes.js';
+import salesRoutes from './routes/sales.routes.js';
 
 
 const app = express();

@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import * as InstallmentController from '../controllers/installments.controller';
-import { authMiddleware } from '../middlewares/auth';
+import * as InstallmentController from '../controllers/installments.controller.js';
+import { authMiddleware } from '../middlewares/auth.js';
 
 const router = Router();
 
