@@ -79,3 +79,20 @@
     max-width: 100%; 
   }
 }
+
+/* --- Botão de Logout --- */
+button.nav-link {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  padding: 8px 12px;
+}
+
+button.nav-link.btn-logout:hover {
+  background: rgba(255, 59, 48, 0.1);
+}
+
+button.nav-link.btn-logout:hover .nav-icon {
+  color: #ff3b30;
+}
