@@ -3,6 +3,8 @@ import "./Footer.css";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
+  
+  const isAuthenticated = !!localStorage.getItem('token');
 
   return (
     <footer className="modern-footer">
@@ -19,13 +21,16 @@ export function Footer() {
             </p>
           </div>
 
-          <nav className="footer-nav">
-            <Link to="/">Vitrine</Link>
-            <Link to="/pdv">PDV</Link>
-            <Link to="/customers">Clientes</Link>
-            <Link to="/dashboard">Dashboard</Link>
-            <Link to="/estoque">Estoque</Link>
-          </nav>
+          {/* MOSTRA O MENU DO RODAPÉ APENAS SE ESTIVER LOGADO */}
+          {isAuthenticated && (
+            <nav className="footer-nav">
+              <Link to="/">Vitrine</Link>
+              <Link to="/pdv">PDV</Link>
+              <Link to="/customers">Clientes</Link>
+              <Link to="/dashboard">Dashboard</Link>
+              <Link to="/estoque">Estoque</Link>
+            </nav>
+          )}
         </div>
 
         <div className="footer-bottom">
