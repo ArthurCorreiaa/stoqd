@@ -1,5 +1,5 @@
 import { type Request, type Response } from 'express';
-import { prisma } from '../lib/prisma';
+import { prisma } from '../lib/prisma.js';
 
 export async function getDashboardSummary(_req: Request, res: Response) {
   try {

@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express';
-import { prisma } from '../lib/prisma';
+import { prisma } from '../lib/prisma.js';
 
 export async function getAll(_req: Request, res: Response) {
   try {
