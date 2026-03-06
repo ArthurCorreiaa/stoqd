@@ -13,7 +13,7 @@ export function Footer() {
         <div className="footer-top">
           <div className="brand-col">
             <div className="footer-logo">
-              <span className="brand-symbol">✦</span>
+              <span className="brand-symbol">▲</span>
               <span className="brand-name">stoqd</span>
             </div>
             <p className="footer-mission">

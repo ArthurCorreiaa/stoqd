@@ -31,7 +31,7 @@ export function Header() {
       <div className="header-content">
         
         <Link to="/" className="brand-area">
-          <span className="brand-symbol">✦</span>
+          <span className="brand-symbol">▲</span>
           <h1 className="brand-name">stoqd</h1>
         </Link>
 
