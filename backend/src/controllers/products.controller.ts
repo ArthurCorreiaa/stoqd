@@ -44,9 +44,11 @@ export async function upsert(req: Request, res: Response) {
     imageUrl,
   } = req.body;
 
+  const trimmedName = name?.trim(); 
+
   try {
     const existingProduct = await prisma.product.findUnique({
-      where: { name: name },
+      where: { name: trimmedName },
     });
 
     if (existingProduct) {
