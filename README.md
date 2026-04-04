@@ -1,6 +1,6 @@
-# ✦ stoqd 
+# ▲ stoqd 
 
-O **stoqd** é um sistema *full-stack* de Gestão de Estoque e Ponto de Venda desenvolvido para automatizar e otimizar as operações de um negócio de varejo. O projeto centraliza o controle de produtos, fluxo de caixa e gestão complexa de vendas a prazo.
+O **stoqd** é um sistema *full-stack* de Gestão de Estoque e Ponto de Venda desenvolvido para automatizar e otimizar as operações de um negócio de varejo. O projeto centraliza o controle de produtos, fluxo de caixa e gestão de vendas a prazo.
 
 ## 🛠️ Arquitetura e Tecnologias
 
