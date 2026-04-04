@@ -51,7 +51,17 @@ export function Home() {
         <div className="products-grid">
           {filteredProducts.map(product => (
             <div key={product.id} className="product-card base-card">
-              <div className="product-image-placeholder">📦</div>
+              <div className="product-image-container">
+                {product.imageUrl ? (
+                  <img 
+                    src={product.imageUrl} 
+                    alt={`Imagem de ${product.name}`} 
+                    className="product-image" 
+                  />
+                ) : (
+                  <div className="product-image-placeholder">📦</div>
+                )}
+              </div>
               <div className="product-info">
                 <h3>{product.name}</h3>
                 <span className={`badge ${product.quantity > 0 ? 'badge-success' : 'badge-danger'}`}>
