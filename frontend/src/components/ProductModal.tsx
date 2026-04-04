@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { api } from '../api';
 import { DropdownMenu } from './DropdownMenu';
 import { parseCurrencyInput } from '../utils/formatters';
+import { supabase } from '../lib/supabase';
 
 interface ProductModalProps {
   productToEdit: any | null;
@@ -13,8 +14,12 @@ export function ProductModal({ productToEdit, onClose, onSuccess }: ProductModal
   const [brands, setBrands] = useState<any[]>([]);
   const [categories, setCategories] = useState<any[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
   
-  const [form, setForm] = useState({ name: '', brandId: '', categoryId: '', quantity: '', averageCost: '', sellingPrice: '', expiryDate: '' });
+  const [form, setForm] = useState({ 
+    name: '', brandId: '', categoryId: '', quantity: '', 
+    averageCost: '', sellingPrice: '', expiryDate: '', imageUrl: ''
+  });
 
   const loadInitialData = async () => {
     try {
@@ -28,10 +33,14 @@ export function ProductModal({ productToEdit, onClose, onSuccess }: ProductModal
     loadInitialData();
     if (productToEdit) {
       setForm({
-        name: productToEdit.name || '', brandId: productToEdit.brandId ? String(productToEdit.brandId) : '',
-        categoryId: productToEdit.categoryId ? String(productToEdit.categoryId) : '', quantity: productToEdit.quantity ? String(productToEdit.quantity) : '',
-        averageCost: productToEdit.averageCost ? String(productToEdit.averageCost) : '', sellingPrice: productToEdit.sellingPrice ? String(productToEdit.sellingPrice) : '',
-        expiryDate: productToEdit.expiryDate ? new Date(productToEdit.expiryDate).toISOString().split('T')[0] : ''
+        name: productToEdit.name || '', 
+        brandId: productToEdit.brandId ? String(productToEdit.brandId) : '',
+        categoryId: productToEdit.categoryId ? String(productToEdit.categoryId) : '', 
+        quantity: productToEdit.quantity ? String(productToEdit.quantity) : '',
+        averageCost: productToEdit.averageCost ? String(productToEdit.averageCost) : '', 
+        sellingPrice: productToEdit.sellingPrice ? String(productToEdit.sellingPrice) : '',
+        expiryDate: productToEdit.expiryDate ? new Date(productToEdit.expiryDate).toISOString().split('T')[0] : '',
+        imageUrl: productToEdit.imageUrl || ''
       });
     }
   }, [productToEdit]);
@@ -41,12 +50,44 @@ export function ProductModal({ productToEdit, onClose, onSuccess }: ProductModal
     setForm(prev => ({ ...prev, [name]: name === 'averageCost' || name === 'sellingPrice' ? parseCurrencyInput(value) : value }));
   };
 
+  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    try {
+      setIsUploading(true);
+      const file = event.target.files?.[0];
+      if (!file) return;
+
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${Math.random().toString(36).substring(2)}.${fileExt}`;
+      const filePath = `fotos/${fileName}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from('produtos')
+        .upload(filePath, file);
+
+      if (uploadError) throw uploadError;
+
+      const { data } = supabase.storage.from('produtos').getPublicUrl(filePath);
+
+      setForm(prev => ({ ...prev, imageUrl: data.publicUrl }));
+    } catch (error) {
+      console.error('Erro no upload:', error);
+      alert('Erro ao enviar a imagem. Tente novamente.');
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
   const handleSubmit = async () => {
     setIsSubmitting(true);
     const payload = {
-      name: form.name, brandId: Number(form.brandId), categoryId: form.categoryId ? Number(form.categoryId) : null,
-      quantity: Number(form.quantity), averageCost: Number(form.averageCost), sellingPrice: Number(form.sellingPrice),
+      name: form.name.trim(),
+      brandId: Number(form.brandId), 
+      categoryId: form.categoryId ? Number(form.categoryId) : null,
+      quantity: Number(form.quantity), 
+      averageCost: Number(form.averageCost), 
+      sellingPrice: Number(form.sellingPrice),
       expiryDate: form.expiryDate ? new Date(form.expiryDate) : null,
+      imageUrl: form.imageUrl || null,
     };
 
     try {
@@ -92,6 +133,32 @@ export function ProductModal({ productToEdit, onClose, onSuccess }: ProductModal
           </div>
 
           <div className="form-row">
+            <div className="form-group" style={{ width: '100%' }}>
+              <label>Foto do Produto</label>
+              <input 
+                type="file" 
+                accept="image/*" 
+                onChange={handleImageUpload}
+                disabled={isUploading}
+                className="input-standard"
+                style={{ padding: '0.4rem', border: '1px dashed var(--border-color)', cursor: 'pointer' }}
+              />
+              {isUploading && <p style={{ fontSize: '0.85rem', color: 'var(--accent-color)', marginTop: '4px' }}>Enviando imagem para a nuvem...</p>}
+              
+              {form.imageUrl && !isUploading && (
+                <div style={{ marginTop: '12px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <img 
+                    src={form.imageUrl} 
+                    alt="Preview" 
+                    style={{ height: '60px', width: '60px', objectFit: 'cover', borderRadius: '8px', border: '1px solid var(--border-color)' }} 
+                  />
+                  <span style={{ fontSize: '0.85rem', color: 'var(--text-dim)' }}>Imagem carregada com sucesso!</span>
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="form-row">
             <DropdownMenu label="Marca" items={brands} selectedId={form.brandId} onSelect={(id) => setForm({...form, brandId: id})} onCreate={async (n) => { await api.post('/brands', { name: n }); loadInitialData(); }} onUpdate={async (id, n) => { await api.put(`/brands/${id}`, { name: n }); loadInitialData(); }} onDelete={async (id) => { await api.delete(`/brands/${id}`); loadInitialData(); }} />
             <DropdownMenu label="Categoria" items={categories} selectedId={form.categoryId} onSelect={(id) => setForm({...form, categoryId: id})} onCreate={async (n) => { await api.post('/categories', { name: n }); loadInitialData(); }} onUpdate={async (id, n) => { await api.put(`/categories/${id}`, { name: n }); loadInitialData(); }} onDelete={async (id) => { await api.delete(`/categories/${id}`); loadInitialData(); }} />
           </div>
@@ -103,8 +170,10 @@ export function ProductModal({ productToEdit, onClose, onSuccess }: ProductModal
           </div>
 
           <div className="form-actions">
-            <button type="button" className="btn-secondary" onClick={onClose} disabled={isSubmitting}>Cancelar</button>
-            <button type="submit" className="btn-primary" disabled={isSubmitting}>{isSubmitting ? 'Salvando...' : 'Salvar'}</button>
+            <button type="button" className="btn-secondary" onClick={onClose} disabled={isSubmitting || isUploading}>Cancelar</button>
+            <button type="submit" className="btn-primary" disabled={isSubmitting || isUploading}>
+              {isSubmitting ? 'Salvando...' : 'Salvar'}
+            </button>
           </div>
         </form>
       </div>
