@@ -87,7 +87,7 @@ export function ProductModal({ productToEdit, onClose, onSuccess }: ProductModal
       averageCost: Number(form.averageCost), 
       sellingPrice: Number(form.sellingPrice),
       expiryDate: form.expiryDate ? new Date(form.expiryDate) : null,
-      imageUrl: form.imageUrl || null,
+      imageUrl: form.imageUrl,
     };
 
     try {

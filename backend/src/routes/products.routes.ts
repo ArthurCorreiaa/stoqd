@@ -6,6 +6,7 @@ const router = Router();
 
 router.get('/', ProductController.getAll);
 router.post('/', authMiddleware, ProductController.upsert);
+router.put('/:id', authMiddleware, ProductController.update);
 router.delete('/:id', authMiddleware, ProductController.remove);
 
 export default router;
