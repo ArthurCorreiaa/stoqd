@@ -62,6 +62,7 @@ model Sale {
 
   items       SaleItem[]
   installments Installment[]
+  discount    Float? @default(0)
 }
 
 model SaleItem {

@@ -357,3 +357,82 @@
   .products-grid-pdv { overflow: visible; }
   .pdv-cart { max-width: 100%; min-height: 500px; }
 }
+
+
+.pdv-search-bar {
+  margin-bottom: 1.5rem;
+}
+
+.customer-phone-dropdown {
+  font-size: 0.8rem;
+  margin-left: 8px;
+  color: var(--text-dim);
+}
+
+.empty-cart-icon {
+  margin-bottom: 1rem;
+  opacity: 0.5;
+}
+
+.pdv-discount-section {
+  padding: 1rem 0;
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.pdv-section-label {
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.pdv-discount-input-group {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.pdv-discount-toggle {
+  display: flex;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.pdv-toggle-btn {
+  padding: 0.6rem 0.8rem;
+  font-weight: bold;
+  background: transparent;
+  color: var(--text-main);
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.pdv-toggle-btn.active {
+  background: var(--accent-color);
+  color: white;
+}
+
+.pdv-discount-input {
+  flex: 1;
+}
+
+.total-row-sub {
+  font-size: 0.9rem;
+  color: var(--text-dim);
+  margin-bottom: 4px;
+}
+
+.total-row-discount {
+  font-size: 0.9rem;
+  color: var(--danger-color);
+  margin-bottom: 8px;
+}
+
+.btn-checkout {
+  width: 100%;
+  padding: 1.2rem;
+}

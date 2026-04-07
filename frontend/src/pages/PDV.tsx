@@ -3,7 +3,7 @@ import { api } from '../api';
 import { useProducts } from '../hooks/useProducts';
 import { useCustomers } from '../hooks/useCustomers';
 import { useCart } from '../hooks/useCart';
-import { formatCurrency } from '../utils/formatters';
+import { formatCurrency, parseCurrencyInput } from '../utils/formatters';
 import { CustomerModal } from '../components/CustomerModal';
 import { CheckoutModal } from '../components/CheckoutModal';
 import './PDV.css';
@@ -24,6 +24,19 @@ export function PDV() {
   const [isCustomerModalOpen, setIsCustomerModalOpen] = useState(false);
   const [isCheckoutModalOpen, setIsCheckoutModalOpen] = useState(false);
 
+  const [observation, setObservation] = useState('');
+  const [discountInput, setDiscountInput] = useState('');
+  const [discountType, setDiscountType] = useState<'fixed' | 'percentage'>('fixed');
+
+  const itemsTotal = cartTotal; 
+  const typedDiscount = Number(discountInput) || 0;
+  
+  const finalDiscountInReais = discountType === 'percentage' 
+    ? itemsTotal * (typedDiscount / 100) 
+    : typedDiscount;
+
+  const finalTotal = Math.max(0, itemsTotal - finalDiscountInReais);
+
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -39,9 +52,10 @@ export function PDV() {
     try {
       await api.post('/sales', {
         customerId: selectedCustomer ? Number(selectedCustomer) : null,
-        totalAmount: cartTotal,
-        paymentType,
+        observation: observation.trim() || null, 
+        discount: finalDiscountInReais,
         installmentsCount,
+        paymentType,
         items: cart.map(item => ({ 
           productId: item.id, 
           quantity: item.cartQuantity, 
@@ -50,9 +64,13 @@ export function PDV() {
       });
       
       alert('Venda registrada com sucesso!');
+      
       clearCart();
       setSelectedCustomer('');
       setCustomerSearchText('');
+      setObservation('');
+      setDiscountInput('');
+      setDiscountType('fixed');
       setIsCheckoutModalOpen(false);
       refetchProducts(); 
     } catch (err) { 
@@ -77,8 +95,7 @@ export function PDV() {
 
       <main className="pdv-content">
         <section className="pdv-products">
-          
-          <div className="input-with-icon" style={{ marginBottom: '1.5rem' }}>
+          <div className="input-with-icon pdv-search-bar">
             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
             </svg>
@@ -148,7 +165,7 @@ export function PDV() {
                   </div>
                   {filteredCustomersList.map(c => (
                     <div key={c.id} className="customer-dropdown-item" onClick={() => handleSelectCustomer(String(c.id), c.name)}>
-                      {c.name} <span className="text-dim" style={{fontSize: '0.8rem', marginLeft: '8px'}}>{c.phone}</span>
+                      {c.name} <span className="customer-phone-dropdown">{c.phone}</span>
                     </div>
                   ))}
                 </div>
@@ -161,7 +178,7 @@ export function PDV() {
           <div className="cart-items">
             {cart.length === 0 ? (
               <div className="empty-cart">
-                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" style={{ marginBottom: '1rem', opacity: 0.5 }}>
+                <svg className="empty-cart-icon" xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
                   <circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
                 </svg>
                 <br/>Carrinho vazio
@@ -190,12 +207,67 @@ export function PDV() {
             )}
           </div>
 
-          <div className="cart-footer">
-            <div className="total-row">
-              <span className="total-label">TOTAL</span>
-              <h2 className="total-value">{formatCurrency(cartTotal)}</h2>
+          {cart.length > 0 && (
+            <div className="pdv-discount-section">
+              
+              <div>
+                <label className="pdv-section-label">Desconto</label>
+                <div className="pdv-discount-input-group">
+                  <div className="pdv-discount-toggle">
+                    <button 
+                      type="button"
+                      className={`pdv-toggle-btn ${discountType === 'fixed' ? 'active' : ''}`}
+                      onClick={() => setDiscountType('fixed')}
+                    >R$</button>
+                    <button 
+                      type="button"
+                      className={`pdv-toggle-btn ${discountType === 'percentage' ? 'active' : ''}`}
+                      onClick={() => setDiscountType('percentage')}
+                    >%</button>
+                  </div>
+                  <input 
+                    type="text" 
+                    className="input-standard pdv-discount-input" 
+                    placeholder="0.00" 
+                    value={discountInput}
+                    onChange={e => setDiscountInput(parseCurrencyInput(e.target.value))}
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="pdv-section-label">Observação (Opcional)</label>
+                <input 
+                  type="text" 
+                  className="input-standard" 
+                  placeholder="Ex: Desconto do ciclo..." 
+                  value={observation}
+                  onChange={e => setObservation(e.target.value)}
+                />
+              </div>
+
             </div>
-            <button className="btn-primary" style={{width: '100%', padding: '1.2rem'}} disabled={cart.length === 0} onClick={() => setIsCheckoutModalOpen(true)}>
+          )}
+
+          <div className="cart-footer">
+            {finalDiscountInReais > 0 && (
+              <>
+                <div className="total-row total-row-sub">
+                  <span>Subtotal</span>
+                  <span>{formatCurrency(itemsTotal)}</span>
+                </div>
+                <div className="total-row total-row-discount">
+                  <span>Desconto</span>
+                  <span>- {formatCurrency(finalDiscountInReais)}</span>
+                </div>
+              </>
+            )}
+
+            <div className="total-row">
+              <span className="total-label">TOTAL A PAGAR</span>
+              <h2 className="total-value">{formatCurrency(finalTotal)}</h2>
+            </div>
+            <button className="btn-primary btn-checkout" disabled={cart.length === 0} onClick={() => setIsCheckoutModalOpen(true)}>
               Prosseguir Pagamento
             </button>
           </div>
@@ -206,7 +278,7 @@ export function PDV() {
         isOpen={isCheckoutModalOpen}
         onClose={() => setIsCheckoutModalOpen(false)}
         onConfirm={handleConfirmCheckout}
-        totalAmount={cartTotal}
+        totalAmount={finalTotal} 
         customers={customers}
         selectedCustomerId={selectedCustomer}
         isProcessing={isProcessing}

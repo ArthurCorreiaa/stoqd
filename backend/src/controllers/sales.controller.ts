@@ -2,16 +2,18 @@ import type { Request, Response } from 'express';
 import { prisma } from '../lib/prisma.js';
 
 export async function create(req: Request, res: Response) { 
-  const { customerId, items, installmentsCount = 1, observation } = req.body;
+  const { customerId, items, installmentsCount = 1, observation, discount = 0 } = req.body;
 
   if (!items || items.length === 0) {
     return res.status(400).json({ error: "A venda precisa ter pelo menos um item." });
   }
 
+  const discountValue = Number(discount) || 0;
+
   try {
     const result = await prisma.$transaction(async (tx) => {
       
-      let totalSale = 0;
+      let grossTotal = 0;
       const saleItemsData = [];
 
       for (const item of items) {
@@ -21,7 +23,7 @@ export async function create(req: Request, res: Response) {
         if (product.quantity < item.quantity) throw new Error(`Estoque insuficiente para ${product.name}.`);
 
         const itemTotal = product.sellingPrice * item.quantity;
-        totalSale += itemTotal;
+        grossTotal += itemTotal;
 
         saleItemsData.push({
           productId: product.id,
@@ -35,8 +37,14 @@ export async function create(req: Request, res: Response) {
         });
       }
 
+      if (discountValue > grossTotal) {
+        throw new Error("O desconto não pode ser maior que o valor total da venda.");
+      }
+
+      const finalTotal = grossTotal - discountValue;
+
       const installmentsData = [];
-      const installmentValue = totalSale / installmentsCount;
+      const installmentValue = finalTotal / installmentsCount; 
       const isPaidUpfront = installmentsCount === 1 && !customerId;
 
       for (let i = 1; i <= installmentsCount; i++) {
@@ -55,9 +63,10 @@ export async function create(req: Request, res: Response) {
 
       const sale = await tx.sale.create({
         data: {
-          total: totalSale,
+          total: finalTotal,
+          discount: discountValue,
           customerId: customerId ? Number(customerId) : null,
-          observation,
+          observation: observation ? String(observation).trim() : null,
           items: { create: saleItemsData },
           installments: { create: installmentsData }
         },
